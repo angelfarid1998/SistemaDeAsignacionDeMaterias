@@ -7,10 +7,10 @@
             <div class="card">
                 <div class="card-header text-center font-weight-bold"> 
                     <h2> Sistema de asignación de materias </h2> <br>
-                    <h4> <u> Nuevo estudiante </u> </h4> 
+                    <h4> <u> Nuevo profesor </u> </h4> 
                 </div>
 
-                <form action="{{ route('estudiantes.stores') }}" method="POST">
+                <form action="{{ route('profesores.stores') }}" method="POST">
                     @csrf
                     <div class="card-body">
 
@@ -19,7 +19,6 @@
                                 <label for="">Tipo de documento</label>
                                 <select name="tipo_documento" class="form-control" name="" id="" required>
                                     <option value="">Seleccione...</option>
-                                    <option value="TI:Tarjeta de indentidad">Tarjeta de Indentidad</option>
                                     <option value="CC:Cedula de Ciudadania">Cédula de Ciudadanía </option>
                                     <option value="CE:Cedula de Extrangeria">Cédula de Extranjería </option>
                                 </select>
@@ -48,17 +47,13 @@
                                 <label for="">Ciudad</label>
                                 <input name="ciudad" type="text" class="form-control" placeholder="Ciudad" required>
                             </div>
-                            <div class="col-md-6">
-                                <label for="">Semestre</label>
-                                <input name="semestre" type="text" class="form-control" placeholder="Semestre" maxlength="1" onkeypress="return valideKey(event);" required>
-                            </div>
                         </div>
                     </div>
                     
                     <br>
                     <div class="row">
                         <div class=" offset-3 col-md-3 d-grid gap-2">
-                            <a href="{{ route('estudiantes.index') }}" class="btn btn-outline-danger btn-lg" style="font-size: 0.8rem" > Volver </a>
+                            <a href="{{ route('profesores.index') }}" class="btn btn-outline-danger btn-lg" style="font-size: 0.8rem" > Volver </a>
                         </div>
                         
                         <div class=" col-md-3 d-grid gap-2">
@@ -110,7 +105,7 @@
         icon: 'error',
         title: 'Verifique la informacion, hay datos duplicados'
         })
-    </script>     
+    </script>    
 
     @endif
 

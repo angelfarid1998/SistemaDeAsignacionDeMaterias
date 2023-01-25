@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('documento');
             $table->string('tipo_documento');
             $table->string('nombres');
-            $table->string('telefono');
+            $table->string('telefono',20);
             $table->string('email', 50)->unique();
             $table->string('direccion');
             $table->string('ciudad');

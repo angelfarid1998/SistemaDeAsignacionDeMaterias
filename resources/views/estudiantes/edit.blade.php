@@ -7,10 +7,11 @@
             <div class="card">
                 <div class="card-header text-center font-weight-bold"> 
                     <h2> Sistema de asignación de materias </h2> <br>
-                    <h4> <u> Nuevo estudiante </u> </h4> 
+                    <h4> <u> Editar estudiante </u> </h4> 
                 </div>
 
-                <form action="{{ route('estudiantes.stores') }}" method="POST">
+                <form action="{{ route('estudiantes.update', $estudiante->id) }}" method="POST">
+                    @method('put')
                     @csrf
                     <div class="card-body">
 
@@ -19,38 +20,38 @@
                                 <label for="">Tipo de documento</label>
                                 <select name="tipo_documento" class="form-control" name="" id="" required>
                                     <option value="">Seleccione...</option>
-                                    <option value="TI:Tarjeta de indentidad">Tarjeta de Indentidad</option>
-                                    <option value="CC:Cedula de Ciudadania">Cédula de Ciudadanía </option>
-                                    <option value="CE:Cedula de Extrangeria">Cédula de Extranjería </option>
+                                    <option value="TI:Targeta de Indentidad" {{ $estudiante->tipo_documento == 'TI:Targeta de Indentidad' ? 'selected' : '' }}> TI:Targeta de Indentidad </option>
+                                    <option value="CC:Cedula de Ciudadania"  {{ $estudiante->tipo_documento == 'CC:Cedula de Ciudadania' ? 'selected' : '' }}> CC:Cedula de Ciudadania </option>
+                                    <option value="CE:Cedula de Extrangeria" {{ $estudiante->tipo_documento == 'CE:Cedula de Extrangeria' ? 'selected' : '' }}> CE:Cedula de Extrangeria </option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="">N° documento</label>
-                                <input name="documento" type="text" class="form-control" placeholder="N° documento" minlength="10" maxlength="10" onkeypress="return valideKey(event);" required>
+                                <input name="documento" type="text" value="{{ $estudiante->documento }}" class="form-control" minlength="10" maxlength="10" onkeypress="return valideKey(event);" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="">Nombre completo</label>
-                                <input name="nombres" type="text" class="form-control" placeholder="Nombre completo" required>
+                                <input name="nombres" type="text" value="{{ $estudiante->nombres }}" class="form-control" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="">Telefono</label>
-                                <input name="telefono" type="text" class="form-control" placeholder="Telefono" minlength="7" maxlength="10" onkeypress="return valideKey(event);" required>
+                                <input name="telefono" type="text" value="{{ $estudiante->telefono }}" class="form-control" minlength="7" maxlength="10" onkeypress="return valideKey(event);" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="">Email</label>
-                                <input name="email" type="email" class="form-control" placeholder="Example@ex.com" required>
+                                <input name="email" type="email" value="{{ $estudiante->email }}" class="form-control" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="">Direccion</label>
-                                <input name="direccion" type="text" class="form-control" placeholder="Nombre completo" required>
+                                <label for="">Dirección</label>
+                                <input name="direccion" type="text" value="{{ $estudiante->direccion }}" class="form-control" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="">Ciudad</label>
-                                <input name="ciudad" type="text" class="form-control" placeholder="Ciudad" required>
+                                <input name="ciudad" type="text" value="{{ $estudiante->ciudad }}" class="form-control" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="">Semestre</label>
-                                <input name="semestre" type="text" class="form-control" placeholder="Semestre" maxlength="1" onkeypress="return valideKey(event);" required>
+                                <input name="semestre" type="text" value="{{ $estudiante->semestre }}" class="form-control" maxlength="1" onkeypress="return valideKey(event);" required>
                             </div>
                         </div>
                     </div>
@@ -110,7 +111,7 @@
         icon: 'error',
         title: 'Verifique la informacion, hay datos duplicados'
         })
-    </script>     
+    </script>   
 
     @endif
 

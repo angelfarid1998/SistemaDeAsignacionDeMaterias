@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header text-center font-weight-bold"> 
                     <h2> Sistema de asignación de materias </h2> <br>
-                    <h4> <u> Ver estudiante </u> </h4> 
+                    <h4> <u> Ver profesor </u> </h4> 
                 </div>
 
                 <div class="card-body">
@@ -17,43 +17,37 @@
                             <label for="">Tipo de documento</label>
                             <select name="tipo_documento" class="form-control" name="" id="" disabled>
                                 <option value="">Seleccione...</option>
-                                <option {{ $estudiante->tipo_documento == $estudiante->tipo_documento ? 'selected' : '' }}> {{ $estudiante->tipo_documento }} </option>
-                                <option {{ $estudiante->tipo_documento == $estudiante->tipo_documento ? 'selected' : '' }}> {{ $estudiante->tipo_documento }} </option>
-                                <option {{ $estudiante->tipo_documento == $estudiante->tipo_documento ? 'selected' : '' }}> {{ $estudiante->tipo_documento }} </option>
+                                <option {{ $profesor->tipo_documento == $profesor->tipo_documento ? 'selected' : '' }}> {{ $profesor->tipo_documento }} </option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <label for="">N° documento</label>
-                            <input value="{{ $estudiante->documento }}" class="form-control" disabled>
+                            <input value="{{ $profesor->documento }}" class="form-control" disabled>
                         </div>
                         <div class="col-md-3">
                             <label for="">Nombre completo</label>
-                            <input value="{{ $estudiante->nombres }}" class="form-control" disabled>
+                            <input value="{{ $profesor->nombres }}" class="form-control" disabled>
                         </div>
                         <div class="col-md-3">
                             <label for="">Telefono</label>
-                            <input value="{{ $estudiante->telefono }}" class="form-control" disabled>
+                            <input value="{{ $profesor->telefono }}" class="form-control" disabled>
                         </div>
                         <div class="col-md-3">
                             <label for="">Email</label>
-                            <input value="{{ $estudiante->email }}" class="form-control" disabled>
+                            <input value="{{ $profesor->email }}" class="form-control" disabled>
                         </div>
                         <div class="col-md-3">
                             <label for="">Dirección</label>
-                            <input value="{{ $estudiante->direccion }}" class="form-control" disabled>
+                            <input value="{{ $profesor->direccion }}" class="form-control" disabled>
                         </div>
                         <div class="col-md-3">
                             <label for="">Ciudad</label>
-                            <input value="{{ $estudiante->ciudad }}" class="form-control" disabled>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="">Semestre</label>
-                            <input value="{{ $estudiante->semestre }}" class="form-control" disabled>
+                            <input value="{{ $profesor->ciudad }}" class="form-control" disabled>
                         </div>
                     </div>
                     <br>
-                    <h4> <u> Materias asignadas </u> </h4>
-                    <table id="calcular_columna" class="table table-bordered table-hover">
+                    <h4> <u> Materias impartidas </u> </h4>
+                    <table id="myTable" class="table table-bordered table-hover">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -62,7 +56,6 @@
                             <th scope="col">Creditos</th>
                             <th scope="col">Area</th>
                             <th scope="col">Tipo</th>
-                            {{-- <th scope="col"></th> --}}
                         </tr>
                         </thead>
                         <tbody>
@@ -92,7 +85,7 @@
                     
                     <br>
 
-                    <h4> <u> Materias totales </u> </h4>
+                    {{-- <h4> <u> Materias totales </u> </h4>
                     <form action="{{ route('estudiantes.AsignarMaterias') }}" class="d-inline" method="post">
                         @csrf
                         <table id="myTable" class="table table-bordered table-hover">
@@ -118,7 +111,7 @@
                                             <td> {{ $materia->area }} </td>
                                             <td> {{ $materia->tipo }} </td>
                                             <td>
-                                                <input type="hidden" value="{{ $estudiante->id }}" name="estudiante_id" id="estudiante_id">
+                                                <input type="hidden" value="{{ $profesor->id }}" name="estudiante_id" id="estudiante_id">
                                                 <input type="checkbox" name="materia_id[]" id="asignada" value="{{ $materia->id }}">                                        
                                             </td>
                                         </tr>
@@ -126,17 +119,12 @@
                                 </tbody>
                                 
                         </table> 
-                        <br>
-                        <div class="row">
-                            <div class=" offset-3 col-md-3 d-grid gap-2">
-                                <a href="{{ route('estudiantes.index') }}" class="btn btn-outline-danger btn-lg" style="font-size: 0.8rem" > Volver </a>
-                            </div>
-                            
-                            <div class=" col-md-3 d-grid gap-2">
-                                <button type="submit" class="btn btn-outline-success btn-lg" style="font-size: 0.8rem" > Guardar </button>
-                        </div>
                     </div>                
-                </form>
+                </form> --}}
+                <div class="row">
+                    <div class=" offset-4 col-md-4 d-grid gap-2">
+                        <a href="{{ route('profesores.index') }}" class="btn btn-outline-danger btn-sm" style="font-size: 0.8rem" > Volver </a>
+                    </div>
             </div>
         </div>
     </div>
@@ -159,61 +147,6 @@
         }
     }
     </script> 
-
-    <script>
-        //Ejecuto la función al cargar la página
-        $(document).ready(function()
-        {
-        //Defino el totales de mi columna en 0
-        var total_col4 = 0;
-        //Recorro todos los tr ubicados en el tbody
-        $('#calcular_columna tbody').find('tr').each(function (i, el) {
-                    
-                //Voy incrementando las variables segun la fila ( .eq(0) representa la fila 1 )     
-                total_col4 += parseFloat($(this).find('td').eq(3).text());
-                        
-            });
-            //Muestro el resultado en el th correspondiente a la columna
-            if (total_col4 >= 7) {
-                const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 4000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-                })
-
-                Toast.fire({
-                icon: 'success',
-                title: 'Perfecto, cumple con el numero de creditos ' + total_col4
-                })
-                $('#calcular_columna tfoot tr th').eq(3).text("Creditos " + total_col4);
-            } else {
-                const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 4000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-                })
-
-                Toast.fire({
-                icon: 'error',
-                title: 'Alerta, usted tiene ' + total_col4 + ' creditos, minimo: 7'
-                })
-                $('#calcular_columna tfoot tr th').eq(3).text("Creditos: " + total_col4);
-            }
-
-        });
-    </script>
 
     @if(Session::has('guardado')){{
         Session::get('') 

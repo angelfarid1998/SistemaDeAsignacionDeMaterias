@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('creditos');
             $table->string('area');
             $table->string('tipo');
+            $table->string('profesor_id');
             $table->timestamps();
         });
     }

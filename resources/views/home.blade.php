@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-md-4 " {{--  style="border-style: solid; border-color: red;" --}}>
                             <img src="/img/iconos/profesores.png" width="100" height="100" alt="Docentes" srcset=""><br>
-                            <a href="" class="btn btn-success">Profesores</a>
+                            <a href="{{ route('profesores.index') }}" class="btn btn-success">Profesores</a>
                         </div>
                         <div class="col-md-4 " {{--  style="border-style: solid; border-color: red;" --}}>
                             <img src="/img/iconos/asignatura.png" width="100" height="100" alt="Asignaturas" srcset=""><br>

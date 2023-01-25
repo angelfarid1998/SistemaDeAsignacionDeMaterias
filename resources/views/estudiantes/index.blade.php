@@ -43,22 +43,15 @@
                             <td> {{ $estudiante->ciudad }} </td>
                             <td> {{ $estudiante->semestre }} </td>
                             <td>
-                                <a href="{{ url('estudiantes/show/'.$estudiante->id) }}" class="btn btn-info btn-sm">
-                                    Ver 
+                                <a href="{{ url('estudiantes/show/'.$estudiante->id) }}" title="Ver Estudiante" class="btn btn-outline-info btn-sm">
+                                    <img src="/img/iconos/show.png" alt="Ver" width="15" >
                                 </a>
-                                | 
-                                <a href="{{ url('estudiantes/'.$estudiante->id.'/edit') }}" class="btn btn-primary btn-sm">
-                                    Editar 
+                                <a href="{{ route('estudiantes.edit',$estudiante->id) }}" title="Editar" class="btn btn-outline-primary btn-sm">
+                                    <img src="/img/iconos/edit.png" alt="Editar" width="15" > 
                                 </a>
-                                |
-                                 
-                                {{-- <form action="{{ url('estudiantes/'.$estudiante->id) }}" class="d-inline" method="post">
-                                    @csrf
-                                    {{ method_field('DELETE') }}
-                                    <input type="submit" onclick="return confirm('quieres borrar?')" class="btn btn-danger btn-sm" value="borrar"> 
-                                </form> --}}
-                                {{-- <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$estudiante->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteEstudiante">Eliminar</a> --}}
-                                <button id="eliminarObjetivo" onclick="eliminarObjetivo({{$estudiante->id}})" class="btn btn-danger btn-sm">Eliminar</button>
+                                <button id="eliminarObjetivo" onclick="eliminarObjetivo({{$estudiante->id}})" title="Eliminar" class="btn btn-outline-danger btn-sm">
+                                    <img src="/img/iconos/delete.png" alt="Eliminar" width="15">
+                                </button>
 
                             </td>
                         </tr>
@@ -69,11 +62,11 @@
                 <br>
                 <div class="row">
                     <div class=" offset-3 col-md-3 d-grid gap-2">
-                        <a href="{{ route('home') }}" class="btn btn-danger" style="font-size: 0.8rem" > Volver </a>
+                        <a href="{{ route('home') }}" class="btn btn-outline-danger" style="font-size: 0.8rem" > Volver </a>
                     </div>
                     
                     <div class=" col-md-3 d-grid gap-2">
-                        <a href="{{ route('estudiantes.create') }}" class="btn btn-info " style="font-size: 0.8rem" > Agregar estudiante</a>
+                        <a href="{{ route('estudiantes.create') }}" class="btn btn-outline-info " style="font-size: 0.8rem" > Agregar estudiante</a>
                     </div>
                 </div>
         </div>
@@ -92,12 +85,21 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(result) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Perfecto, se eliminó correctamente',
-                        showConfirmButton: false,
-                        timer: 3000,
+                    const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                    })
+
+                    Toast.fire({
+                    icon: 'success',
+                    title: 'Registro eliminado exitosamente'
                     }),
                     
                     $(document).ready(function () {
@@ -106,66 +108,63 @@
                         location.reload(true);
                     }, 3000);
                     });
-                    
-
                 }
             });
         }
     </script>
 
-
-    @if(Session::has('eliminado')){{
-        Session::get('') 
-    }}
-    <script>
-        const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-        })
-
-        Toast.fire({
-        icon: 'success',
-        title: 'Registro eliminado exitosamente'
-        })
-    </script>    
-
-    @endif
-
     @if(Session::has('guardado')){{
         Session::get('') 
     }}
-    <script>
-        const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-        })
+        <script>
+            const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+            })
 
-        Toast.fire({
-        icon: 'success',
-        title: 'Registro guardado exitosamente'
-        })
-    </script>    
+            Toast.fire({
+            icon: 'success',
+            title: 'Registro guardado exitosamente'
+            })
+        </script>    
+
+    @endif
+
+    @if(Session::has('actualizado')){{
+        Session::get('') 
+    }}
+        <script>
+            const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+            })
+
+            Toast.fire({
+            icon: 'success',
+            title: 'Registro actualizado exitosamente'
+            })
+        </script>    
+
+    @endif
 
     <script>
         $(document).ready( function () {
             $('#myTable').DataTable();
         } );
     </script>
-
-    @endif
 
 @endsection

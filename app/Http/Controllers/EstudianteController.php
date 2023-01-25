@@ -59,11 +59,6 @@ class EstudianteController extends Controller
         $docrep = Estudiante::where('documento', $request->documento)->get();
         $emailrep = Estudiante::where('email', $request->email)->get();
 
-
-        // return response()->json($documentos);
-        $mensajedoc = "El N° de documento ya esta registrado";
-        $mensajeemail = "El email ya esta registrado";
-
         if (count($docrep) == 1 or count($emailrep) == 1) {
 
             Session::flash('duplicado');
@@ -82,9 +77,9 @@ class EstudianteController extends Controller
             $estudiante->semestre       = $request->semestre;
             $estudiante->save();
 
-            $estudiantes = Estudiante::all();
+            // $estudiantes = Estudiante::all();
             Session::flash('guardado');
-            return view('estudiantes.index', ['estudiantes' => $estudiantes]);
+            return redirect()->route('estudiantes.index');
         }
     }
 
@@ -121,7 +116,7 @@ class EstudianteController extends Controller
         $estudiante = Estudiante::find($request->estudiante_id);
         $estudiante->materia_id = json_encode($ids);
         $estudiante->save();
-        
+
         Session::flash('guardado');
         return redirect()->route('estudiantes.index');
     }
@@ -132,9 +127,10 @@ class EstudianteController extends Controller
      * @param  \App\Models\Estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    public function edit(Estudiante $estudiante)
+    public function edit(Estudiante $estudiante, $id)
     {
-        //
+        $estudiante = Estudiante::where('id', $id)->first();
+        return view('estudiantes.edit',['estudiante'=>$estudiante]);
     }
 
     /**
@@ -144,9 +140,37 @@ class EstudianteController extends Controller
      * @param  \App\Models\Estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Estudiante $estudiante)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'documento' => 'required',
+            'tipo_documento' => 'required',
+            'nombres' => 'required',
+            'telefono' => 'required',
+            'email' => 'required',
+            'direccion' => 'required',
+            'ciudad' => 'required',
+            'semestre' => 'required',
+        ]);
+        $datosEstudiante = request()->except(['_token', '_method']);
+        // return response()->json($datosEstudiante);
+
+        $docrep = Estudiante::where('documento', $request->documento)->get();
+        $emailrep = Estudiante::where('email', $request->email)->get();
+
+        if (count($docrep) > 1 or count($emailrep) > 1) {
+
+            Session::flash('duplicado');
+            return back();
+        } else {
+            // $estudiantes = Estudiante::all();
+            $datosEstudiante = request()->except(['_token', '_method']);
+
+            Estudiante::where('id', '=', $id)->update($datosEstudiante);
+
+            Session::flash('actualizado');
+            return redirect()->route('estudiantes.index');
+        }
     }
 
     /**
@@ -155,18 +179,13 @@ class EstudianteController extends Controller
      * @param  \App\Models\Estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    // public function destroy(Estudiante $estudiante, $id)
-    // {
-    //     $estudiante = Estudiante::findOrfail($id);
-    //     Estudiante::destroy($estudiante);
-    //     Session::flash('eliminado');
-    //     return redirect()->route('estudiantes.index')->with('success', 'Student Data deleted successfully');
-
-    // }
+    public function destroy(Estudiante $estudiante)
+    {
+        //
+    }
 
     public function eliminarObjetivo($id)
     {
-        // delete
         $estudiante = Estudiante::find($id);
         $estudiante->delete();
         return response()->json([

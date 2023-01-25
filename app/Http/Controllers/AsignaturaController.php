@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asignatura;
+use App\Models\Profesor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -28,7 +29,9 @@ class AsignaturaController extends Controller
      */
     public function create()
     {
-        //
+        $profesores = Profesor::all();
+
+        return view('materias.create', ['profesores' => $profesores]);
     }
 
     /**
@@ -39,7 +42,37 @@ class AsignaturaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'creditos' => 'required',
+            'area' => 'required',
+            'tipo' => 'required',
+            'profesor_id' => 'required'
+        ]);
+
+        $nombre = $request->nombre;
+
+        $nombrerep = Asignatura::where('nombre', 'like', "%" . $nombre . "%")->get();
+
+        if (count($nombrerep) == 1) {
+            Session::flash('duplicado');
+            return back();
+        } else {
+
+            $materia = new Asignatura();
+
+            $materia->nombre       = $request->nombre;
+            $materia->descripcion  = $request->descripcion;
+            $materia->creditos     = $request->creditos;
+            $materia->area         = $request->area;
+            $materia->tipo         = $request->tipo;
+            $materia->profesor_id  = $request->profesor_id;
+            $materia->save();
+
+            Session::flash('guardado');
+            return redirect()->route('materias.index');
+        }
     }
 
     /**
@@ -59,9 +92,11 @@ class AsignaturaController extends Controller
      * @param  \App\Models\Asignatura  $asignatura
      * @return \Illuminate\Http\Response
      */
-    public function edit(Asignatura $asignatura)
+    public function edit(Asignatura $asignatura, $id)
     {
-        //
+        $profesores = Profesor::all();
+        $materia = Asignatura::where('id', $id)->first();
+        return view('materias.edit', ['materia' => $materia, 'profesores' => $profesores]);
     }
 
     /**
@@ -71,9 +106,32 @@ class AsignaturaController extends Controller
      * @param  \App\Models\Asignatura  $asignatura
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Asignatura $asignatura)
+    public function update(Request $request, $id)
     {
-        //
+        // return response()->json($request);
+        $request->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'creditos' => 'required',
+            'area' => 'required',
+            'tipo' => 'required',
+            'profesor_id' => 'required'
+        ]);
+
+        $nombre = $request->nombre;
+
+        $nombrerep = Asignatura::where('nombre', 'like', "%" . $nombre . "%")->get();
+        if (count($nombrerep) > 1) {
+            Session::flash('duplicado');
+            return back();
+        } else {
+
+            $datosMateria = request()->except(['_token', '_method']);
+
+            Asignatura::where('id', '=', $id)->update($datosMateria);
+            Session::flash('actualizado');
+            return redirect()->route('materias.index');
+        }
     }
 
     /**
@@ -82,20 +140,17 @@ class AsignaturaController extends Controller
      * @param  \App\Models\Asignatura  $asignatura
      * @return \Illuminate\Http\Response
      */
-    // public function destroy(Asignatura $materias, $id)
-    // {
-    //     $materias = Asignatura::findOrfail($id);
-    //     Asignatura::destroy($materias);
-    //     Session::flash('eliminado');
-    //     return redirect()->route('materias.index')->with('success', 'Student Data deleted successfully');
-    // }
+    public function destroy(Asignatura $materias)
+    {
+    }
 
-    public function eliminarObjetivo($id) {
+    public function eliminarObjetivo($id)
+    {
         // delete
         $materia = Asignatura::find($id);
         $materia->delete();
         return response()->json([
-        'message' => 'Articulo Eliminado'
-        ]);    
-   }
+            'message' => 'Articulo Eliminado'
+        ]);
+    }
 }

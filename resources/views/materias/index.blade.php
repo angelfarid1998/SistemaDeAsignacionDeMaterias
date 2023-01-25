@@ -9,60 +9,48 @@
                     <h2> Sistema de asignación de materias </h2> <br>
                     <h4> <u> Materias </u> </h4> 
                 </div>
-
-                {{-- <div id="table_refresh"> --}}
-                    <table id="myTable" class="table table-bordered table-hover">
-                        <thead>
+                <table id="myTable" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Creditos</th>
+                        <th scope="col">Area</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($materias as $materia)
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Descripcion</th>
-                            <th scope="col">Creditos</th>
-                            <th scope="col">Area</th>
-                            <th scope="col">Tipo</th>
-                            <th scope="col">Acciones</th>
+                            <td> {{ $loop->iteration }}</td>                           
+                            <td> {{ $materia->nombre }} </td>
+                            <td> {{ $materia->descripcion }} </td>
+                            <td> {{ $materia->creditos }} </td>
+                            <td> {{ $materia->area }} </td>
+                            <td> {{ $materia->tipo }} </td>
+                            <td>
+                                <a href="{{ route('materias.edit', $materia->id) }}" title="Editar" class="btn btn-outline-primary btn-sm">
+                                    <img src="/img/iconos/edit.png" alt="Editar" width="15" > 
+                                </a>
+                                <button id="eliminarObjetivo" onclick="eliminarObjetivo({{$materia->id}})" title="Eliminar" class="btn btn-outline-danger btn-sm">
+                                    <img src="/img/iconos/delete.png" alt="Eliminar" width="15">
+                                </button>
+
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($materias as $materia)
-                            <tr>
-                                <td> {{ $loop->iteration }}</td>                           
-                                <td> {{ $materia->nombre }} </td>
-                                <td> {{ $materia->descripcion }} </td>
-                                <td> {{ $materia->creditos }} </td>
-                                <td> {{ $materia->area }} </td>
-                                <td> {{ $materia->tipo }} </td>
-                                <td>
-                                    {{-- <a href="{{ url('materias/show/'.$materia->id) }}" class="btn btn-info btn-xs">
-                                        Ver 
-                                    </a> --}}
-                                    
-                                    <a href="{{ url('materias/'.$materia->id.'/edit') }}" class="btn btn-primary btn-xs">
-                                        Editar 
-                                    </a>
-                                    |
-                                    
-                                    {{-- <form action="{{ url('materias/'.$materia->id) }}" class="d-inline" method="post">
-                                        @csrf
-                                        {{ method_field('DELETE') }}
-                                        <input type="submit" onclick="return confirm('quieres borrar?')" class="btn btn-danger btn-xs" value="borrar"> 
-                                    </form> --}}
-                                    <button id="eliminarObjetivo" onclick="eliminarObjetivo({{$materia->id}})" class="btn btn-danger btn-xs">Eliminar</button>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table> 
-                {{-- </div> --}}
+                        @endforeach
+                    </tbody>
+                </table> 
             </div>
             <br>
             <div class="row">
                 <div class=" offset-3 col-md-3 d-grid gap-2">
-                    <a href="{{ route('home') }}" class="btn btn-danger" style="font-size: 0.8rem" > Volver </a>
-                </div>
-                
+                    <a href="{{ route('home') }}" class="btn btn-outline-danger" style="font-size: 0.8rem" > Volver </a>
+                </div>                
                 <div class=" col-md-3 d-grid gap-2">
-                    <a href="{{ route('materias.create') }}" class="btn btn-info font" style="font-size: 0.8rem" > Agregar materia</a>
+                    <a href="{{ route('materias.create') }}" class="btn btn-outline-info font" style="font-size: 0.8rem" > Agregar materia</a>
                 </div>
             </div>
         </div>
@@ -110,21 +98,6 @@
         }
     </script>
 
-    {{-- @if(Session::has('eliminado')){{
-        Session::get('') 
-    }}
-    <script>
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Perfecto, se eliminó correctamente',
-            showConfirmButton: false,
-            timer: 3000
-        })
-    </script>    
-
-    @endif --}}
-
     @if(Session::has('guardado')){{
         Session::get('') 
     }}
@@ -146,6 +119,30 @@
         title: 'Registro guardado exitosamente'
         })
     </script>    
+
+    @endif
+
+    @if(Session::has('actualizado')){{
+        Session::get('') 
+    }}
+        <script>
+            const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+            })
+
+            Toast.fire({
+            icon: 'success',
+            title: 'Registro actualizado exitosamente'
+            })
+        </script>    
 
     @endif
 
