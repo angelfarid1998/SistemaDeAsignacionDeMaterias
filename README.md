@@ -2,8 +2,6 @@
 
 ## Reto Desarrollador Junior: Sistema de asignación de materias
 
-<p align="center"><a href="https://github.com/DanielZC" target="_blank"><img src="./public/img/fotoPerfilGit.jpg" width="150" styel="border-radius:150px;" alt="Laravel Logo"></a></p>
-
 ## Requisitos y pasos previos para ejecutar el proyecto
 
 **Requisitos**
