@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('direccion');
             $table->string('ciudad');
             $table->integer('semestre');
-            $table->json('materia_id');
+            $table->json('materia_id')->default('[0]');
             $table->timestamps();
         });
     }
