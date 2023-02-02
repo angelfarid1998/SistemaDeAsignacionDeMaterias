@@ -95,7 +95,7 @@
                     <h4> <u> Materias totales </u> </h4>
                     <form action="{{ route('estudiantes.AsignarMaterias') }}" class="d-inline" method="post">
                         @csrf
-                        <table id="myTable" class="table table-bordered table-hover">
+                        <table id="myTable" class="table table2 table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -144,20 +144,20 @@
 @endsection
 
 @section('JavaScript')
-<script type="text/javascript">
-    function valideKey(evt){
-        
-        // code is the decimal ASCII representation of the pressed key.
-        var code = (evt.which) ? evt.which : evt.keyCode;
-        
-        if(code==8) { // backspace.
-          return true;
-        } else if(code>=48 && code<=57) { // is a number.
-          return true;
-        } else{ // other keys.
-          return false;
+    <script type="text/javascript">
+        function valideKey(evt){
+            
+            // code is the decimal ASCII representation of the pressed key.
+            var code = (evt.which) ? evt.which : evt.keyCode;
+            
+            if(code==8) { // backspace.
+            return true;
+            } else if(code>=48 && code<=57) { // is a number.
+            return true;
+            } else{ // other keys.
+            return false;
+            }
         }
-    }
     </script> 
 
     <script>
@@ -189,7 +189,7 @@
 
                 Toast.fire({
                 icon: 'success',
-                title: 'Perfecto, cumple con el numero de creditos ' + total_col4
+                title: 'Perfecto, cumple con el numero de creditos. Tiene ' + total_col4
                 })
                 $('#calcular_columna tfoot tr th').eq(3).text("Creditos " + total_col4);
             } else {
@@ -213,6 +213,36 @@
             }
 
         });
+    </script>
+
+    <script>
+        function toggleCheckbox(element)
+        {
+            element.checked = !element.checked;
+        }
+        $(document).ready( function (element) {
+            // $('#myTable').DataTable();
+            seleccion = [];
+            $(".table2 tr td input[type='checkbox']:checked").each(function(){
+                row = $(this).closest('tr');
+                seleccion.push({
+                    nombre : row.find('td:eq(1)').text(),
+                    descripcion : row.find('td:eq(2)').text(),
+                    creditos : row.find('td:eq(3)').text(),
+                    area : row.find('td:eq(4)').text(),
+                    tipo : row.find('td:eq(5)').text(),
+                });
+            });
+            // for (let i = 0; i < seleccion.length; i++) {
+            //     // const element = array[i];
+            //     var fila="<td>"+seleccion[i].nombre+"</td><td>"+seleccion[i].descripcion+"</td><td>"+seleccion[i].creditos+"</td><td>"+seleccion[i].area+"</td><td>"+seleccion[i].tipo+"</td>";
+            //     console.log(i);
+                
+            //     document.getElementById("calcular_columna").innerHTML = fila;
+            // }
+
+            // console.log(seleccion[0].nombre);
+        } );
     </script>
 
     @if(Session::has('guardado')){{

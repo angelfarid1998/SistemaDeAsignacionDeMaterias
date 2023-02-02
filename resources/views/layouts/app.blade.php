@@ -20,6 +20,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
 
+    <style>
+        .iconhome{
+            justify-content: center;
+            align-items: center;
+            display: grid;
+        }
+    </style>
+
     <script>
         $(document).ready( function () {
             $('#myTable').DataTable();
